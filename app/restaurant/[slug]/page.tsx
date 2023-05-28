@@ -32,9 +32,11 @@ const fetchRestaurantBySlug = async (slug: string): Promise<Restaurant> => {
             slug: true,
         },
     });
+
     if (!restaurant) {
         throw new Error();
     }
+
     return restaurant;
 };
 
@@ -44,7 +46,6 @@ export default async function RestaurantDetails({
     params: { slug: string };
 }) {
     const restaurant = await fetchRestaurantBySlug(slug);
-    console.log(restaurant);
 
     return (
         <>
