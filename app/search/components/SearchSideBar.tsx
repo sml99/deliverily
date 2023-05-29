@@ -1,24 +1,75 @@
-export default function ({ locations, cuisines }: { locations: string[]; cuisines: string[] }) {
+import { PRICE } from "@prisma/client";
+import Link from "next/link";
+
+export default function ({
+    locations,
+    cuisines,
+    params,
+}: {
+    locations: string[];
+    cuisines: string[];
+    params: { city: string; cuisine: string; price: PRICE };
+}) {
+    const prices = [
+        { price: PRICE.CHEAP, label: "$" },
+        { price: PRICE.REGULAR, label: "$$" },
+        { price: PRICE.EXPENSIVE, label: "$$$" },
+    ];
     return (
         <div className="w-1/5">
-            <div className="border-b pb-4">
+            <div className="border-b pb-4 flex flex-col">
                 <h1 className="mb-2">Region</h1>
                 {locations?.map((location) => (
-                    <p className="font-light text-reg capitalize">{location}</p>
+                    <Link
+                        key={location}
+                        className="font-light text-reg capitalize"
+                        href={{
+                            pathname: `/search`,
+                            query: {
+                                ...params,
+                                city: location,
+                            },
+                        }}
+                    >
+                        {location}
+                    </Link>
                 ))}
             </div>
-            <div className="border-b pb-4 mt-3">
+            <div className="border-b pb-4 mt-3 flex flex-col">
                 <h1 className="mb-2">Cuisine</h1>
                 {cuisines?.map((cuisine) => (
-                    <p className="font-light text-reg capitalize">{cuisine}</p>
+                    <Link
+                        key={cuisine}
+                        className="font-light text-reg capitalize"
+                        href={{
+                            pathname: `/search`,
+                            query: {
+                                ...params,
+                                cuisine: cuisine,
+                            },
+                        }}
+                    >
+                        {cuisine}
+                    </Link>
                 ))}
             </div>
             <div className="mt-3 pb-4">
                 <h1 className="mb-2">Price</h1>
                 <div className="flex">
-                    <button className="border w-full text-reg font-light rounded-l p-2">$</button>
-                    <button className="border-r border-t border-b w-full text-reg font-light p-2">$$</button>
-                    <button className="border-r border-t border-b w-full text-reg font-light p-2 rounded-r">$$$</button>
+                    {prices.map(({ price, label }) => (
+                        <Link
+                            href={{
+                                pathname: "/search",
+                                query: {
+                                    ...params,
+                                    price: price,
+                                },
+                            }}
+                            className="border w-full text-reg font-light rounded-l p-2"
+                        >
+                            {label}
+                        </Link>
+                    ))}
                 </div>
             </div>
         </div>

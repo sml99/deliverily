@@ -13,12 +13,20 @@ export default function SearchBar() {
                 type="text"
                 placeholder="State, city or town"
                 value={location}
-                onChange={(event) => setLocation(event.target.value)}
+                onChange={(event) =>
+                    setLocation(event.target.value)
+                }
             />
             <button
                 className="rounded bg-red-600 px-9 py-2 text-white"
                 onClick={() => {
-                    router.push("/search?city=" + location.toLowerCase());
+                    router.push(
+                        `/search${
+                            location &&
+                            "?city=" +
+                                location.toLowerCase()
+                        }`
+                    );
                 }}
             >
                 Let's go
